@@ -42,15 +42,94 @@ function App() {
   const originRef = useRef()
   /** @type React.MutableRefObject<HTMLInputElement> */
   const destiantionRef = useRef()
-  const stop = useRef()
+  const stop1 = useRef()
+  const stop2 = useRef()
+  const stop3 = useRef()
+  const stop4 = useRef()
+  const stop5 = useRef()
+  const stop6 = useRef()
+  const stop7 = useRef()
+  const stop8 = useRef()
 
-  const [isOpen, setOpen] = React.useState(false);
-  
-  const handleClose = () => {
-    setOpen(false);
+  const [isOpen1, setOpen1] = React.useState(false);
+  const [isOpen2, setOpen2] = React.useState(false);
+  const [isOpen3, setOpen3] = React.useState(false);
+  const [isOpen4, setOpen4] = React.useState(false);
+  const [isOpen5, setOpen5] = React.useState(false);
+  const [isOpen6, setOpen6] = React.useState(false);
+  const [isOpen7, setOpen7] = React.useState(false);
+  const [isOpen8, setOpen8] = React.useState(false);
+  const [num, setNum] = React.useState(0);
+
+  const handleClose1 = () => {
+    setOpen1(false); 
+    setNum(num-1);
   };
-  const handleOpen = () => {
-    setOpen(true);
+  const handleClose2 = () => {
+    setOpen2(false);
+    setNum(num-1);
+  };
+  const handleClose3 = () => {
+    setOpen3(false); 
+    setNum(num-1);
+  };
+  const handleClose4 = () => {
+    setOpen4(false);
+    setNum(num-1);
+  };
+  const handleClose5 = () => {
+    setOpen5(false); 
+    setNum(num-1);
+  };
+  const handleClose6 = () => {
+    setOpen6(false);
+    setNum(num-1);
+  };
+  const handleClose7 = () => {
+    setOpen7(false); 
+    setNum(num-1);
+  };
+  const handleClose8 = () => {
+    setOpen8(false);
+    setNum(num-1);
+  };
+
+  function handleOpen() {
+    if(num<=7)
+    {
+      setNum(num+1); 
+    }
+
+    setOpen1(true);
+
+    if(num==7)
+    {
+      setOpen8(true); 
+    }
+    else if(num==6)
+    {
+      setOpen7(true); 
+    }
+    else if(num==5)
+    {
+      setOpen6(true); 
+    }
+    else if(num==4)
+    {
+      setOpen5(true); 
+    }
+    else if(num==3)
+    {
+      setOpen4(true); 
+    }
+    else if(num==2)
+    {
+      setOpen3(true); 
+    }
+    else if(num==1)
+    {
+      setOpen2(true); 
+    }
   };
 
   if (!isLoaded) {
@@ -60,7 +139,14 @@ function App() {
   async function calculateRoute() {
     if (originRef.current.value === '' || 
         destiantionRef.current.value === ''|| 
-        stop.current.value === '') {
+        stop1.current.value === '' ||
+        stop2.current.value === '' ||
+        stop3.current.value === '' ||
+        stop4.current.value === '' ||
+        stop5.current.value === '' ||
+        stop6.current.value === '' ||
+        stop7.current.value === '' ||
+        stop8.current.value === '') {
       return
     }
     
@@ -70,7 +156,14 @@ function App() {
       origin: originRef.current.value,
       destination: destiantionRef.current.value,
     //  waypoints: waypts,
-      waypoints: [{location: stop.current.value, stopover: true}], 
+      waypoints: [{location: stop1.current.value, stopover: true}, 
+        {location: stop2.current.value, stopover: true},
+        {location: stop3.current.value, stopover: true},
+        {location: stop4.current.value, stopover: true},
+        {location: stop5.current.value, stopover: true},
+        {location: stop6.current.value, stopover: true},
+        {location: stop7.current.value, stopover: true},
+        {location: stop8.current.value, stopover: true}], 
       //new google.maps.LatLng(48.865277, 2.343025),
       optimizeWaypoints: true,
       // eslint-disable-next-line no-undef
@@ -136,20 +229,146 @@ function App() {
               <Input width='264px' type='text' placeholder='Origin' ref={originRef}/>
             </Autocomplete>
           </HStack>  
-          {isOpen && 
+          {isOpen1 && 
             <HStack pl='20px' pt='10px'>
               <Autocomplete>
                 <Input
                   width='264px'
                   type='text'
                   placeholder='Add a stop'
-                  ref={stop}
+                  ref={stop1}
                 />
               </Autocomplete>
               <Button 
               p={0} 
               colorScheme='white'
-              onClick={handleClose}>
+              onClick={handleClose1}>
+              <Image src={erase} mr='10px' width='25px' height='auto'/>
+              </Button>
+            </HStack>
+          }
+           {isOpen2 && 
+            <HStack pl='20px' pt='10px'>
+              <Autocomplete>
+                <Input
+                  width='264px'
+                  type='text'
+                  placeholder='Add a stop'
+                  ref={stop2}
+                />
+              </Autocomplete>
+              <Button 
+              p={0} 
+              colorScheme='white'
+              onClick={handleClose2}>
+              <Image src={erase} mr='10px' width='25px' height='auto'/>
+              </Button>
+            </HStack>
+          }
+          {isOpen3 && 
+            <HStack pl='20px' pt='10px'>
+              <Autocomplete>
+                <Input
+                  width='264px'
+                  type='text'
+                  placeholder='Add a stop'
+                  ref={stop3}
+                />
+              </Autocomplete>
+              <Button 
+              p={0} 
+              colorScheme='white'
+              onClick={handleClose3}>
+              <Image src={erase} mr='10px' width='25px' height='auto'/>
+              </Button>
+            </HStack>
+          }
+          {isOpen4 && 
+            <HStack pl='20px' pt='10px'>
+              <Autocomplete>
+                <Input
+                  width='264px'
+                  type='text'
+                  placeholder='Add a stop'
+                  ref={stop4}
+                />
+              </Autocomplete>
+              <Button 
+              p={0} 
+              colorScheme='white'
+              onClick={handleClose4}>
+              <Image src={erase} mr='10px' width='25px' height='auto'/>
+              </Button>
+            </HStack>
+          }
+          {isOpen5 && 
+            <HStack pl='20px' pt='10px'>
+              <Autocomplete>
+                <Input
+                  width='264px'
+                  type='text'
+                  placeholder='Add a stop'
+                  ref={stop5}
+                />
+              </Autocomplete>
+              <Button 
+              p={0} 
+              colorScheme='white'
+              onClick={handleClose5}>
+              <Image src={erase} mr='10px' width='25px' height='auto'/>
+              </Button>
+            </HStack>
+          }
+          {isOpen6 && 
+            <HStack pl='20px' pt='10px'>
+              <Autocomplete>
+                <Input
+                  width='264px'
+                  type='text'
+                  placeholder='Add a stop'
+                  ref={stop6}
+                />
+              </Autocomplete>
+              <Button 
+              p={0} 
+              colorScheme='white'
+              onClick={handleClose6}>
+              <Image src={erase} mr='10px' width='25px' height='auto'/>
+              </Button>
+            </HStack>
+          }
+          {isOpen7 && 
+            <HStack pl='20px' pt='10px'>
+              <Autocomplete>
+                <Input
+                  width='264px'
+                  type='text'
+                  placeholder='Add a stop'
+                  ref={stop7}
+                />
+              </Autocomplete>
+              <Button 
+              p={0} 
+              colorScheme='white'
+              onClick={handleClose7}>
+              <Image src={erase} mr='10px' width='25px' height='auto'/>
+              </Button>
+            </HStack>
+          }
+          {isOpen8 && 
+            <HStack pl='20px' pt='10px'>
+              <Autocomplete>
+                <Input
+                  width='264px'
+                  type='text'
+                  placeholder='Add a stop'
+                  ref={stop8}
+                />
+              </Autocomplete>
+              <Button 
+              p={0} 
+              colorScheme='white'
+              onClick={handleClose8}>
               <Image src={erase} mr='10px' width='25px' height='auto'/>
               </Button>
             </HStack>
@@ -174,6 +393,7 @@ function App() {
               <Image src={cross} mr='10px' width='auto' height='auto'/>
               Add a stop
             </Button>
+            <Text> {num} </Text>
           </Box>
     </Flex>
   )
