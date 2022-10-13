@@ -13,6 +13,8 @@ import {
   Image
 } from '@chakra-ui/react'
 import cross from "assets/img/cross/cross.svg";
+import erase from "assets/img/erase/erase.svg"
+import * as React from 'react';
 
 import {
   useJsApiLoader,
@@ -35,22 +37,30 @@ function App() {
   const google = window.google;  
   const [map, setMap] = useState(/** @type google.maps.Map */ (null))
   const [directionsResponse, setDirectionsResponse] = useState(null)
-  const [distance, setDistance] = useState('')
-  const [duration, setDuration] = useState('')
 
   /** @type React.MutableRefObject<HTMLInputElement> */
   const originRef = useRef()
   /** @type React.MutableRefObject<HTMLInputElement> */
   const destiantionRef = useRef()
-  const destiantionReef = useRef()
+  const stop = useRef()
+
+  const [isOpen, setOpen] = React.useState(false);
+  
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const handleOpen = () => {
+    setOpen(true);
+  };
 
   if (!isLoaded) {
     return <SkeletonText />
   }
 
- 
   async function calculateRoute() {
-    if (originRef.current.value === '' || destiantionRef.current.value === ''|| destiantionReef.current.value === '' ) {
+    if (originRef.current.value === '' || 
+        destiantionRef.current.value === ''|| 
+        stop.current.value === '') {
       return
     }
     
@@ -58,9 +68,9 @@ function App() {
     const directionsService = new google.maps.DirectionsService()
     const results = await directionsService.route({
       origin: originRef.current.value,
-      destination: destiantionReef.current.value,
+      destination: destiantionRef.current.value,
     //  waypoints: waypts,
-      waypoints: [{location: destiantionRef.current.value, stopover: true}], 
+      waypoints: [{location: stop.current.value, stopover: true}], 
       //new google.maps.LatLng(48.865277, 2.343025),
       optimizeWaypoints: true,
       // eslint-disable-next-line no-undef
@@ -69,12 +79,12 @@ function App() {
     setDirectionsResponse(results)
   }
 
-  function clearRoute() {
+ /* function clearRoute() {
     setDirectionsResponse(null)
     originRef.current.value = ''
     destiantionRef.current.value = ''
-    destiantionReef.current.value = ''
-  }
+    stop1.current.value = ''
+  }  */
 
   return (
     <Flex
@@ -121,12 +131,30 @@ function App() {
           >
             Calculate your trip 
           </Box>
-          <HStack pl='35px'>
+          <HStack pl='20px' pt='10px'>
             <Autocomplete>
-              <Input type='text' placeholder='Origin' ref={originRef} width='264px'/>
+              <Input width='264px' type='text' placeholder='Origin' ref={originRef}/>
             </Autocomplete>
-          </HStack>
-          <HStack pl='35px' pt='10px'>
+          </HStack>  
+          {isOpen && 
+            <HStack pl='20px' pt='10px'>
+              <Autocomplete>
+                <Input
+                  width='264px'
+                  type='text'
+                  placeholder='Add a stop'
+                  ref={stop}
+                />
+              </Autocomplete>
+              <Button 
+              p={0} 
+              colorScheme='white'
+              onClick={handleClose}>
+              <Image src={erase} mr='10px' width='25px' height='auto'/>
+              </Button>
+            </HStack>
+          }
+          <HStack pl='20px' pt='10px'>
             <Autocomplete>
               <Input
                 width='264px'
@@ -136,40 +164,17 @@ function App() {
               />
             </Autocomplete>
           </HStack>
-          <HStack pl='35px' pt='10px'>
-            <Autocomplete>
-              <Input
-                width='264px'
-                type='text'
-                placeholder='Destination'
-                ref={destiantionReef}
-              />
-            </Autocomplete>
-          </HStack>
           <Button 
             p={0} 
             pt='10px'
             colorScheme='white' 
             type='submit' 
-            onClick={calculateRoute} 
-            color='424A5C'>
-            <Button 
-              jsaction="leftNav.clickAction">
-                Salut
-            </Button> 
+            color='424A5C'
+            onClick={handleOpen}>
               <Image src={cross} mr='10px' width='auto' height='auto'/>
               Add a stop
-          </Button>
-          <ButtonGroup>
-            <Button colorScheme='pink' type='submit' onClick={calculateRoute}>
-              Calculate Route
             </Button>
-            <IconButton
-              aria-label='center back'
-              onClick={clearRoute}
-            />
-          </ButtonGroup>
-        </Box>
+          </Box>
     </Flex>
   )
 }
