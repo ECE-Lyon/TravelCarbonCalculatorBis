@@ -13,7 +13,6 @@ import {
   DrawerContent,
   DrawerCloseButton,
 } from "@chakra-ui/react";
-import Content from "components/sidebar/components/Content";
 import {
   renderThumb,
   renderTrack,
@@ -26,7 +25,6 @@ import PropTypes from "prop-types";
 import { IoMenuOutline } from "react-icons/io5";
 
 function Sidebar(props) {
-  const { routes } = props;
 
   let variantChange = "0.2s linear";
   let shadow = useColorModeValue(
@@ -54,7 +52,6 @@ function Sidebar(props) {
           renderTrackVertical={renderTrack}
           renderThumbVertical={renderThumb}
           renderView={renderView}>
-          <Content routes={routes} />
         </Scrollbars>
       </Box>
     </Box>
@@ -69,7 +66,6 @@ export function SidebarResponsive(props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = React.useRef();
 
-  const { routes } = props;
   // let isWindows = navigator.platform.startsWith("Win");
   //  BRAND
 
@@ -105,7 +101,6 @@ export function SidebarResponsive(props) {
               renderTrackVertical={renderTrack}
               renderThumbVertical={renderThumb}
               renderView={renderView}>
-              <Content routes={routes} />
             </Scrollbars>
           </DrawerBody>
         </DrawerContent>
@@ -117,7 +112,6 @@ export function SidebarResponsive(props) {
 
 Sidebar.propTypes = {
   logoText: PropTypes.string,
-  routes: PropTypes.arrayOf(PropTypes.object),
   variant: PropTypes.string,
 };
 

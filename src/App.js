@@ -3,11 +3,9 @@ import {
   Button,
   ButtonGroup,
   Flex,
-  Grid,
   HStack,
   IconButton,
   Input,
-  SimpleGrid,
   SkeletonText,
   Text,
   Image
@@ -19,7 +17,6 @@ import * as React from 'react';
 import {
   useJsApiLoader,
   GoogleMap,
-  Marker,
   Autocomplete,
   DirectionsRenderer,
 } from '@react-google-maps/api'
@@ -103,31 +100,31 @@ function App() {
 
     setOpen1(true);
 
-    if(num==7)
+    if(num===7)
     {
       setOpen8(true); 
     }
-    else if(num==6)
+    else if(num===6)
     {
       setOpen7(true); 
     }
-    else if(num==5)
+    else if(num===5)
     {
       setOpen6(true); 
     }
-    else if(num==4)
+    else if(num===4)
     {
       setOpen5(true); 
     }
-    else if(num==3)
+    else if(num===3)
     {
       setOpen4(true); 
     }
-    else if(num==2)
+    else if(num===2)
     {
       setOpen3(true); 
     }
-    else if(num==1)
+    else if(num===1)
     {
       setOpen2(true); 
     }

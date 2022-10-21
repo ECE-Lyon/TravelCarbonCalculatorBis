@@ -1,8 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "assets/css/App.css";
-import { HashRouter, Route, Switch, Redirect } from "react-router-dom";
-import AdminLayout from "layouts/admin";
+import { HashRouter } from "react-router-dom";
+import AdminLayout from "layouts";
 import { ChakraProvider } from "@chakra-ui/react";
 import theme from "theme/theme";
 import { ThemeEditorProvider } from "@hypertheme-editor/chakra-ui";
@@ -12,10 +12,7 @@ ReactDOM.render(
     <React.StrictMode>
       <ThemeEditorProvider>
         <HashRouter>
-          <Switch>
-            <Route path={`/admin`} component={AdminLayout} />
-            <Redirect from='/' to='/admin' />
-          </Switch>
+          <AdminLayout />
         </HashRouter>
       </ThemeEditorProvider>
     </React.StrictMode>

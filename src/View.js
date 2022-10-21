@@ -1,0 +1,18 @@
+import {
+    Box,
+    SimpleGrid,
+  } from "@chakra-ui/react";
+  import React from "react";
+import PieCard from "views/components/PieCard";
+import DailyTraffic from "views/components/DailyTraffic";
+  
+  export default function View() {
+    return (
+      <Box pt={{ base: "20px", md: "20px", xl: "20px" }}>
+        <SimpleGrid columns={{ base: 1, md: 2, xl: 3 }} gap='22px'>
+          <DailyTraffic />
+          <PieCard />
+        </SimpleGrid>
+      </Box>
+    );
+  }
