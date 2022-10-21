@@ -42,6 +42,7 @@ function App() {
   const originRef = useRef()
   /** @type React.MutableRefObject<HTMLInputElement> */
   const destiantionRef = useRef()
+  const [duration, setDuration] = useState('')
   const stop1 = useRef()
   const stop2 = useRef()
   const stop3 = useRef()
@@ -169,6 +170,7 @@ function App() {
       // eslint-disable-next-line no-undef
       travelMode: google.maps.TravelMode.DRIVING,
     })
+    setDuration(results.routes[0].legs[0].duration.text)
     setDirectionsResponse(results)
   }
 
@@ -383,6 +385,15 @@ function App() {
               />
             </Autocomplete>
           </HStack>
+          <ButtonGroup>
+            <Button colorScheme='pink' type='submit' onClick={calculateRoute}>
+              Calculate Route
+            </Button>
+            <IconButton
+              aria-label='center back'
+            />
+          </ButtonGroup>
+          <Text>Duration: {duration} </Text>
           <Button 
             p={0} 
             pt='10px'
@@ -393,7 +404,6 @@ function App() {
               <Image src={cross} mr='10px' width='auto' height='auto'/>
               Add a stop
             </Button>
-            <Text> {num} </Text>
           </Box>
     </Flex>
   )

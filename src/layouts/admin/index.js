@@ -6,6 +6,7 @@ import App from "App.js";
 import React, { useState } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import routes from "routes.js";
+import Itinerary from "Itinerary";
 
 // Custom Chakra theme
 export default function Dashboard(props) {
@@ -52,6 +53,9 @@ export default function Dashboard(props) {
         </Box>
         <Box>
           <App/>
+        </Box>
+        <Box>
+          <Itinerary/>
         </Box>
         {getRoute() ? (
           <Box
