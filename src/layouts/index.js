@@ -9,7 +9,7 @@ import View from "View";
 // Custom Chakra theme
 export default function Dashboard() {
   return (
-    <SimpleGrid columns={{ base: 1, md: 1, xl: 1 }} ml='20px'>
+    <SimpleGrid columns={{ base: 1, md: 1, xl: 1 }}>
       <Box color={'black'}
           fontSize='34px'
           fontWeight='700'

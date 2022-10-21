@@ -40,13 +40,15 @@ export default function DailyTraffic(props) {
               lineHeight='100%'>
               2.579
             </Text>
+          </Flex>
+          <Flex w='100%'>
             <Text
-              ms='6px'
+              me='auto'
               color='secondaryGray.600'
               fontSize='sm'
               fontWeight='500'>
-              Visitors
-            </Text>
+              MImi
+              </Text>
           </Flex>
         </Flex>
         <Flex align='center'>

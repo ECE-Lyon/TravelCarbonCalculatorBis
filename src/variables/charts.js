@@ -127,19 +127,6 @@ export const barChartOptionsConsumption = {
       show: false,
     },
   },
-  tooltip: {
-    style: {
-      fontSize: "12px",
-      fontFamily: undefined,
-    },
-    onDatasetHover: {
-      style: {
-        fontSize: "12px",
-        fontFamily: undefined,
-      },
-    },
-    theme: "dark",
-  },
   xaxis: {
     categories: ["17", "18", "19", "20", "21", "22", "23", "24", "25"],
     show: false,
