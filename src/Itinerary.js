@@ -1,5 +1,7 @@
 
 import React from "react";
+import App from "App";
+
 class Itinerary extends React.Component {
    
     // Constructor 
@@ -12,7 +14,7 @@ class Itinerary extends React.Component {
             mode: 'no-cors'
         };
     }
-   
+
     // ComponentDidMount is used to
     // execute the code 
     componentDidMount() {
@@ -28,7 +30,7 @@ class Itinerary extends React.Component {
     render() {
         const { DataisLoaded, items } = this.state;
         if (!DataisLoaded) return <div>
-            <h1> Pleses wait some time.... </h1> </div> ;
+            <h1> Please wait some time.... </h1> </div> ;
    
         return (
         <div>

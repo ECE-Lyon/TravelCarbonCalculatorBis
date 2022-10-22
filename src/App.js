@@ -27,7 +27,7 @@ const center = { lat: 48.8584, lng: 2.2945 }
 function App() {
 
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey:"",
+    googleMapsApiKey:"AIzaSyDTimPcyahB7Sw8kQBOzXJBzrlZrPKsjMg",
     libraries: ['places'],
   })
 
@@ -40,15 +40,18 @@ function App() {
   /** @type React.MutableRefObject<HTMLInputElement> */
   const destiantionRef = useRef()
   const [duration, setDuration] = useState('')
-  const stop1 = useRef()
-  const stop2 = useRef()
-  const stop3 = useRef()
-  const stop4 = useRef()
-  const stop5 = useRef()
-  const stop6 = useRef()
-  const stop7 = useRef()
-  const stop8 = useRef()
+  const stop1 = useRef('null')
+  const stop2 = useRef('null')
+  const stop3 = useRef('null')
+  const stop4 = useRef('null')
+  const stop5 = useRef('null')
+  const stop6 = useRef('null')
+  const stop7 = useRef('null')
+  const stop8 = useRef('null')
 
+  const waypoint =  useRef([]) 
+  console.log(waypoint.current); 
+  
   const [isOpen1, setOpen1] = React.useState(false);
   const [isOpen2, setOpen2] = React.useState(false);
   const [isOpen3, setOpen3] = React.useState(false);
@@ -93,12 +96,11 @@ function App() {
   };
 
   function handleOpen() {
+
     if(num<=7)
     {
       setNum(num+1); 
     }
-
-    setOpen1(true);
 
     if(num===7)
     {
@@ -127,7 +129,12 @@ function App() {
     else if(num===1)
     {
       setOpen2(true); 
+      
     }
+    
+    setOpen1(true);
+    document.getElementById("addValue").hidden = 'true'; 
+
   };
 
   if (!isLoaded) {
@@ -135,7 +142,7 @@ function App() {
   }
 
   async function calculateRoute() {
-    if (originRef.current.value === '' || 
+  /*  if (originRef.current.value === '' || 
         destiantionRef.current.value === ''|| 
         stop1.current.value === '' ||
         stop2.current.value === '' ||
@@ -146,29 +153,59 @@ function App() {
         stop7.current.value === '' ||
         stop8.current.value === '') {
       return
+    }*/
+   
+       
+    if(num===1){
+      waypoint.current.push({location: stop1.current.value, stopover: true}); 
+      document.getElementById("addValue").hidden = ''; 
     }
-    
-    // eslint-disable-next-line no-undef
+    if(num===2){
+      waypoint.current.push({location: stop2.current.value, stopover: true}); 
+      document.getElementById("addValue").hidden = ''; 
+    }
+    if(num===3){
+      waypoint.current.push({location: stop3.current.value, stopover: true}); 
+      document.getElementById("addValue").hidden = ''; 
+    }
+    /*
+    else if(num<=4){
+      waypoint.current.push({location: stop4.current.value, stopover: true}); 
+      document.getElementById("addValue").hidden = ''; 
+    }
+    else if(num<=5){
+      waypoint.current.push({location: stop5.current.value, stopover: true}); 
+      document.getElementById("addValue").hidden = ''; 
+    }
+    else if(num<=6){
+      waypoint.current.push({location: stop6.current.value, stopover: true}); 
+      document.getElementById("addValue").hidden = ''; 
+    }
+    else if(num<=7){
+      waypoint.current.push({location: stop7.current.value, stopover: true}); 
+      document.getElementById("addValue").hidden = ''; 
+    }
+    else if(num<=8){
+      waypoint.current.push({location: stop8.current.value, stopover: true}); 
+      document.getElementById("addValue").hidden = ''; 
+    }*/
+
     const directionsService = new google.maps.DirectionsService()
     const results = await directionsService.route({
       origin: originRef.current.value,
       destination: destiantionRef.current.value,
-    //  waypoints: waypts,
-      waypoints: [{location: stop1.current.value, stopover: true}, 
-        {location: stop2.current.value, stopover: true},
-        {location: stop3.current.value, stopover: true},
-        {location: stop4.current.value, stopover: true},
-        {location: stop5.current.value, stopover: true},
-        {location: stop6.current.value, stopover: true},
-        {location: stop7.current.value, stopover: true},
-        {location: stop8.current.value, stopover: true}], 
+      waypoints: waypoint.current,  
       //new google.maps.LatLng(48.865277, 2.343025),
       optimizeWaypoints: true,
       // eslint-disable-next-line no-undef
       travelMode: google.maps.TravelMode.DRIVING,
     })
+    
+   // console.log(waypoint.current); 
     setDuration(results.routes[0].legs[0].duration.text)
     setDirectionsResponse(results)
+
+   
   }
 
  /* function clearRoute() {
@@ -232,6 +269,7 @@ function App() {
             <HStack pl='20px' pt='10px'>
               <Autocomplete>
                 <Input
+                  id='sto'
                   width='264px'
                   type='text'
                   placeholder='Add a stop'
@@ -382,16 +420,13 @@ function App() {
               />
             </Autocomplete>
           </HStack>
-          <ButtonGroup>
-            <Button colorScheme='pink' type='submit' onClick={calculateRoute}>
+          <Button colorScheme='pink' type='submit' onClick={calculateRoute}>
               Calculate Route
             </Button>
-            <IconButton
-              aria-label='center back'
-            />
-          </ButtonGroup>
           <Text>Duration: {duration} </Text>
-          <Button 
+          <Button
+            hidden='' 
+            id='addValue'
             p={0} 
             pt='10px'
             colorScheme='white' 
