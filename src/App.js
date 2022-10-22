@@ -1,10 +1,8 @@
 import {
   Box,
   Button,
-  ButtonGroup,
   Flex,
   HStack,
-  IconButton,
   Input,
   SkeletonText,
   Text,
@@ -48,7 +46,6 @@ function App() {
   const stop6 = useRef('null')
   const stop7 = useRef('null')
   const stop8 = useRef('null')
-
   const waypoint =  useRef([]) 
   console.log(waypoint.current); 
   
@@ -61,6 +58,7 @@ function App() {
   const [isOpen7, setOpen7] = React.useState(false);
   const [isOpen8, setOpen8] = React.useState(false);
   const [num, setNum] = React.useState(0);
+  const [val, setVal] = React.useState(0);
 
   const handleClose1 = () => {
     setOpen1(false); 
@@ -157,38 +155,37 @@ function App() {
    
        
     if(num===1){
-      waypoint.current.push({location: stop1.current.value, stopover: true}); 
+      setWaypoint({location: stop1.current.value, stopover: true}); 
       document.getElementById("addValue").hidden = ''; 
     }
     if(num===2){
-      waypoint.current.push({location: stop2.current.value, stopover: true}); 
+      setWaypoint({location: stop2.current.value, stopover: true}); 
       document.getElementById("addValue").hidden = ''; 
     }
     if(num===3){
-      waypoint.current.push({location: stop3.current.value, stopover: true}); 
+      setWaypoint({location: stop3.current.value, stopover: true}); 
       document.getElementById("addValue").hidden = ''; 
     }
-    /*
-    else if(num<=4){
-      waypoint.current.push({location: stop4.current.value, stopover: true}); 
+    if(num===4){
+      setWaypoint({location: stop4.current.value, stopover: true}); 
       document.getElementById("addValue").hidden = ''; 
     }
-    else if(num<=5){
-      waypoint.current.push({location: stop5.current.value, stopover: true}); 
+    if(num===5){
+      setWaypoint({location: stop5.current.value, stopover: true}); 
       document.getElementById("addValue").hidden = ''; 
     }
-    else if(num<=6){
-      waypoint.current.push({location: stop6.current.value, stopover: true}); 
+    if(num===6){
+      setWaypoint({location: stop6.current.value, stopover: true}); 
       document.getElementById("addValue").hidden = ''; 
     }
-    else if(num<=7){
-      waypoint.current.push({location: stop7.current.value, stopover: true}); 
+    if(num===7){
+      setWaypoint({location: stop7.current.value, stopover: true}); 
       document.getElementById("addValue").hidden = ''; 
     }
-    else if(num<=8){
-      waypoint.current.push({location: stop8.current.value, stopover: true}); 
+    if(num===8){
+      setWaypoint({location: stop8.current.value, stopover: true}); 
       document.getElementById("addValue").hidden = ''; 
-    }*/
+    }
 
     const directionsService = new google.maps.DirectionsService()
     const results = await directionsService.route({
@@ -201,11 +198,19 @@ function App() {
       travelMode: google.maps.TravelMode.DRIVING,
     })
     
-   // console.log(waypoint.current); 
     setDuration(results.routes[0].legs[0].duration.text)
-    setDirectionsResponse(results)
+    setDirectionsResponse(results)   
+  }
 
-   
+  function setWaypoint(el){
+    if(val!==num)
+    {
+      waypoint.current.push(el);
+      setVal(num); 
+    }
+    else{
+      waypoint.current.slice(num); 
+    }
   }
 
  /* function clearRoute() {
