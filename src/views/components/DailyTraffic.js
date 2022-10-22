@@ -21,7 +21,6 @@ export default function DailyTraffic(props) {
         <BarChart
           chartData={barChartDataDailyTraffic}
           chartOptions={barChartOptionsDailyTraffic}
-          chartOptions2={barChartOptionsDailyTraffic2}
         />
       </Box>
     </Card>
