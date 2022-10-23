@@ -2,7 +2,6 @@
 import { Box, SimpleGrid } from "@chakra-ui/react";
 import Footer from "components/footer/FooterAdmin.js";
 import App from "App.js";
-import App2 from "App2.js";
 
 // Layout components
 import React from "react";
@@ -23,9 +22,6 @@ export default function Dashboard() {
       </Box>
       <Box>
         <App/>
-      </Box>
-      <Box>
-        <App2/>
       </Box>
       <Box>
         <View/>

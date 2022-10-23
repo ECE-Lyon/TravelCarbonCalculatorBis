@@ -63,34 +63,43 @@ function App() {
   const handleClose1 = () => {
     setOpen1(false); 
     setNum(num-1);
+    deleteWaypoint(stop1.current.value); 
+    
   };
   const handleClose2 = () => {
     setOpen2(false);
     setNum(num-1);
+    deleteWaypoint(stop2.current.value); 
   };
   const handleClose3 = () => {
     setOpen3(false); 
     setNum(num-1);
+    deleteWaypoint(stop3.current.value); 
   };
   const handleClose4 = () => {
     setOpen4(false);
     setNum(num-1);
+    deleteWaypoint(stop4.current.value); 
   };
   const handleClose5 = () => {
     setOpen5(false); 
     setNum(num-1);
+    deleteWaypoint(stop5.current.value); 
   };
   const handleClose6 = () => {
     setOpen6(false);
     setNum(num-1);
+    deleteWaypoint(stop6.current.value); 
   };
   const handleClose7 = () => {
     setOpen7(false); 
     setNum(num-1);
+    deleteWaypoint(stop7.current.value); 
   };
   const handleClose8 = () => {
     setOpen8(false);
-    setNum(num-1);
+    setNum(num-1);    
+    deleteWaypoint(stop8.current.value); 
   };
 
   function handleOpen() {
@@ -127,7 +136,6 @@ function App() {
     else if(num===1)
     {
       setOpen2(true); 
-      
     }
     
     setOpen1(true);
@@ -213,6 +221,17 @@ function App() {
     }
   }
 
+  function deleteWaypoint(el)
+  {
+    for(var i=0; i<waypoint.current.length; i++)
+    {
+      if(waypoint.current.at(i).location===el)
+      {
+        waypoint.current.splice(i, 1);
+      }
+    }
+  }
+
  /* function clearRoute() {
     setDirectionsResponse(null)
     originRef.current.value = ''
@@ -274,7 +293,6 @@ function App() {
             <HStack pl='20px' pt='10px'>
               <Autocomplete>
                 <Input
-                  id='sto'
                   width='264px'
                   type='text'
                   placeholder='Add a stop'
