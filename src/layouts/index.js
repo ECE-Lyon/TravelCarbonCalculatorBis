@@ -24,6 +24,9 @@ export default function Dashboard() {
         <App/>
       </Box>
       <Box>
+        <Itinerary/>
+      </Box>
+      <Box>
         <View/>
       </Box>
       <Box>

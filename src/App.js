@@ -11,6 +11,7 @@ import {
 import cross from "assets/img/cross/cross.svg";
 import erase from "assets/img/erase/erase.svg"
 import * as React from 'react';
+import axios from 'axios'
 
 import {
   useJsApiLoader,
@@ -18,9 +19,10 @@ import {
   Autocomplete,
   DirectionsRenderer,
 } from '@react-google-maps/api'
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 
 const center = { lat: 48.8584, lng: 2.2945 }
+
 
 function App() {
 
@@ -37,7 +39,13 @@ function App() {
   const originRef = useRef()
   /** @type React.MutableRefObject<HTMLInputElement> */
   const destiantionRef = useRef()
-  const [duration, setDuration] = useState('')
+  const [distance, setDistance] = useState('')
+  const distanceData =  useRef("") 
+
+  const [data, setData] = useState([])
+  const [url, setUrl] = useState("https://api.monimpacttransport.fr/beta/getEmissionsPerDistance?km=")
+  //const url = useRef()
+
   const stop1 = useRef('null')
   const stop2 = useRef('null')
   const stop3 = useRef('null')
@@ -59,6 +67,16 @@ function App() {
   const [isOpen8, setOpen8] = React.useState(false);
   const [num, setNum] = React.useState(0);
   const [val, setVal] = React.useState(0);
+
+
+  useEffect(() => {
+    fetch(url)
+      .then((response) => response.json())
+      .then((data) => { setData(data); 
+       console.log('Count is now: ', data);
+    })
+  }, [url])
+
 
   const handleClose1 = () => {
     setOpen1(false); 
@@ -140,7 +158,6 @@ function App() {
     
     setOpen1(true);
     document.getElementById("addValue").hidden = 'true'; 
-
   };
 
   if (!isLoaded) {
@@ -160,7 +177,6 @@ function App() {
         stop8.current.value === '') {
       return
     }*/
-   
        
     if(num===1){
       setWaypoint({location: stop1.current.value, stopover: true}); 
@@ -205,8 +221,18 @@ function App() {
       // eslint-disable-next-line no-undef
       travelMode: google.maps.TravelMode.DRIVING,
     })
-    
-    setDuration(results.routes[0].legs[0].duration.text)
+
+    setDistance(results.routes[0].legs[0].distance.text)
+    distanceData.current =  distance;  
+    for(var i=0; i<distanceData.current.length; i++)
+    {
+        if(distanceData.current.at(i)===" ")
+        {
+            distanceData.current = distanceData.current.slice(0,i+1)
+            i = distanceData.current.length; 
+            setUrl("https://api.monimpacttransport.fr/beta/getEmissionsPerDistance?km="+distanceData.current); 
+        }
+    }    
     setDirectionsResponse(results)   
   }
 
@@ -231,6 +257,9 @@ function App() {
       }
     }
   }
+
+
+
 
  /* function clearRoute() {
     setDirectionsResponse(null)
@@ -283,6 +312,19 @@ function App() {
           pb='5px'
           >
             Calculate your trip 
+          </Box>
+          <Box>
+            <div>
+              {
+                data.map((item) => ( 
+                <ol key = { item.id } >
+                    name: { item.name },  
+                    gco2e: { item.emissions.gco2e }
+                    </ol>
+                ))
+             }
+            </div>         
+        <Text>FEFE</Text>
           </Box>
           <HStack pl='20px' pt='10px'>
             <Autocomplete>
@@ -446,7 +488,7 @@ function App() {
           <Button colorScheme='pink' type='submit' onClick={calculateRoute}>
               Calculate Route
             </Button>
-          <Text>Duration: {duration} </Text>
+          <Text>Distance: {distance} </Text>
           <Button
             hidden='' 
             id='addValue'
@@ -465,3 +507,4 @@ function App() {
 }
 
 export default App
+

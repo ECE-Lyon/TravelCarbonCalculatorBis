@@ -1,14 +1,13 @@
 
 import React from "react";
-import App from "App";
 
 class Itinerary extends React.Component {
+
    
     // Constructor 
     constructor(props) {
         super(props);
-   
-        this.state = {
+        this.state = { 
             items: [],
             DataisLoaded: false,
             mode: 'no-cors'
@@ -17,8 +16,10 @@ class Itinerary extends React.Component {
 
     // ComponentDidMount is used to
     // execute the code 
+
+
     componentDidMount() {
-        fetch("https://api.monimpacttransport.fr/beta/getEmissionsPerDistance?km="+250)
+        fetch("https://api.monimpacttransport.fr/beta/getEmissionsPerDistance?km="+ 250)
             .then((res) => res.json())
             .then((json) => {
                 this.setState({
