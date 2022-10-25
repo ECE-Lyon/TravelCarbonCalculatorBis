@@ -6,7 +6,6 @@ import App from "App.js";
 // Layout components
 import React from "react";
 import View from "View";
-import Itinerary from "Itinerary";
 
 // Custom Chakra theme
 export default function Dashboard() {
@@ -22,9 +21,6 @@ export default function Dashboard() {
       </Box>
       <Box>
         <App/>
-      </Box>
-      <Box>
-        <Itinerary/>
       </Box>
       <Box>
         <View/>

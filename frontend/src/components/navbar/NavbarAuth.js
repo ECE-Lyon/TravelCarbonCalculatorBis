@@ -22,10 +22,10 @@ import {
 } from "@chakra-ui/react";
 
 // Custom components
-import IconBox from "components/icons/IconBox";
-import { HorizonLogo } from "components/icons/Icons";
-import { SidebarResponsive } from "components/sidebar/Sidebar";
-import { SidebarContext } from "contexts/SidebarContext";
+import IconBox from "../frontend/src/components/icons/IconBox";
+import { HorizonLogo } from "../frontend/src/components/icons/Icons";
+import { SidebarResponsive } from "../frontend/src/components/sidebar/Sidebar";
+import { SidebarContext } from "../frontend/src/contexts/SidebarContext";
 
 // Assets
 import { GoChevronDown, GoChevronRight } from "react-icons/go";
@@ -92,7 +92,7 @@ export default function AuthNavbar(props) {
 
   let brand = (
     <Link
-      href={`${process.env.PUBLIC_URL}/#/`}
+      href={`${process.env.PUBLIC_URL}/`}
       target='_blank'
       display='flex'
       lineHeight='100%'
@@ -112,7 +112,7 @@ export default function AuthNavbar(props) {
     brand = (
       <Link
         minW='175px'
-        href={`${process.env.PUBLIC_URL}/#/`}
+        href={`${process.env.PUBLIC_URL}/`}
         target='_blank'
         display='flex'
         lineHeight='100%'

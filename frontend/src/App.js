@@ -11,7 +11,6 @@ import {
 import cross from "assets/img/cross/cross.svg";
 import erase from "assets/img/erase/erase.svg"
 import * as React from 'react';
-import axios from 'axios'
 
 import {
   useJsApiLoader,
@@ -20,16 +19,15 @@ import {
   DirectionsRenderer,
 } from '@react-google-maps/api'
 import { useRef, useState, useEffect } from 'react'
-
+import Itinerary from 'Itinerary';
 const center = { lat: 48.8584, lng: 2.2945 }
 
-
 function App() {
-
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey:"AIzaSyDTimPcyahB7Sw8kQBOzXJBzrlZrPKsjMg",
+    googleMapsApiKey: 'AIzaSyDBavBKAVdA09mux2GkPQtCq84i2i8ISIA',
     libraries: ['places'],
   })
+
 
   const google = window.google;  
   const [map, setMap] = useState(/** @type google.maps.Map */ (null))
@@ -39,12 +37,7 @@ function App() {
   const originRef = useRef()
   /** @type React.MutableRefObject<HTMLInputElement> */
   const destiantionRef = useRef()
-  const [distance, setDistance] = useState('')
-  const distanceData =  useRef("") 
-
-  const [data, setData] = useState([])
-  const [url, setUrl] = useState("https://api.monimpacttransport.fr/beta/getEmissionsPerDistance?km=")
-  //const url = useRef()
+  const [distance, setDistance] = useState()
 
   const stop1 = useRef('null')
   const stop2 = useRef('null')
@@ -56,6 +49,7 @@ function App() {
   const stop8 = useRef('null')
   const waypoint =  useRef([]) 
   console.log(waypoint.current); 
+  const str = ''; 
   
   const [isOpen1, setOpen1] = React.useState(false);
   const [isOpen2, setOpen2] = React.useState(false);
@@ -67,15 +61,6 @@ function App() {
   const [isOpen8, setOpen8] = React.useState(false);
   const [num, setNum] = React.useState(0);
   const [val, setVal] = React.useState(0);
-
-
-  useEffect(() => {
-    fetch(url)
-      .then((response) => response.json())
-      .then((data) => { setData(data); 
-       console.log('Count is now: ', data);
-    })
-  }, [url])
 
 
   const handleClose1 = () => {
@@ -164,6 +149,7 @@ function App() {
     return <SkeletonText />
   }
 
+
   async function calculateRoute() {
   /*  if (originRef.current.value === '' || 
         destiantionRef.current.value === ''|| 
@@ -222,17 +208,17 @@ function App() {
       travelMode: google.maps.TravelMode.DRIVING,
     })
 
-    setDistance(results.routes[0].legs[0].distance.text)
-    distanceData.current =  distance;  
-    for(var i=0; i<distanceData.current.length; i++)
+
+    if(results.routes[0].legs[0].distance.text.length > 6)
     {
-        if(distanceData.current.at(i)===" ")
-        {
-            distanceData.current = distanceData.current.slice(0,i+1)
-            i = distanceData.current.length; 
-            setUrl("https://api.monimpacttransport.fr/beta/getEmissionsPerDistance?km="+distanceData.current); 
-        }
-    }    
+      let num1 = results.routes[0].legs[0].distance.text.slice(0,1)
+      let num2 = results.routes[0].legs[0].distance.text.slice(2, results.routes[0].legs[0].distance.text.length-2)
+      console.log("Hey ",num1+num2)
+      setDistance(num1+num2)
+    }
+    else{
+      setDistance(results.routes[0].legs[0].distance.text.slice(0, results.routes[0].legs[0].distance.text.length-2)) 
+    }
     setDirectionsResponse(results)   
   }
 
@@ -259,20 +245,11 @@ function App() {
   }
 
 
-
-
- /* function clearRoute() {
-    setDirectionsResponse(null)
-    originRef.current.value = ''
-    destiantionRef.current.value = ''
-    stop1.current.value = ''
-  }  */
-
   return (
     <Flex
       position='relative'
       flexDirection='column'
-      h='50vh'
+      h='5vh'
       w='100vw'
       alignItems='flex-start' 
     >
@@ -295,7 +272,7 @@ function App() {
           )}
         </GoogleMap>
       </Box>
-        <Box 
+      <Box 
           width='350px' 
           p={2}
           borderRadius='lg'
@@ -312,19 +289,6 @@ function App() {
           pb='5px'
           >
             Calculate your trip 
-          </Box>
-          <Box>
-            <div>
-              {
-                data.map((item) => ( 
-                <ol key = { item.id } >
-                    name: { item.name },  
-                    gco2e: { item.emissions.gco2e }
-                    </ol>
-                ))
-             }
-            </div>         
-        <Text>FEFE</Text>
           </Box>
           <HStack pl='20px' pt='10px'>
             <Autocomplete>
@@ -501,7 +465,10 @@ function App() {
               <Image src={cross} mr='10px' width='auto' height='auto'/>
               Add a stop
             </Button>
-          </Box>
+      </Box>
+      <Box>
+          <Itinerary distance={distance} />
+      </Box>
     </Flex>
   )
 }
