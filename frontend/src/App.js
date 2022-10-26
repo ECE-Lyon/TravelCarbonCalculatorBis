@@ -6,7 +6,8 @@ import {
   Input,
   SkeletonText,
   Text,
-  Image
+  Image,
+  SimpleGrid,
 } from '@chakra-ui/react'
 import cross from "assets/img/cross/cross.svg";
 import erase from "assets/img/erase/erase.svg"
@@ -20,6 +21,7 @@ import {
 } from '@react-google-maps/api'
 import { useRef, useState, useEffect } from 'react'
 import Itinerary from 'Itinerary';
+import View from 'View';
 const center = { lat: 48.8584, lng: 2.2945 }
 
 function App() {
@@ -27,8 +29,6 @@ function App() {
     googleMapsApiKey: 'AIzaSyDBavBKAVdA09mux2GkPQtCq84i2i8ISIA',
     libraries: ['places'],
   })
-
-
   const google = window.google;  
   const [map, setMap] = useState(/** @type google.maps.Map */ (null))
   const [directionsResponse, setDirectionsResponse] = useState(null)
@@ -37,7 +37,7 @@ function App() {
   const originRef = useRef()
   /** @type React.MutableRefObject<HTMLInputElement> */
   const destiantionRef = useRef()
-  const [distance, setDistance] = useState()
+  const [distance, setDistance] = useState(0)
 
   const stop1 = useRef('null')
   const stop2 = useRef('null')
@@ -48,8 +48,6 @@ function App() {
   const stop7 = useRef('null')
   const stop8 = useRef('null')
   const waypoint =  useRef([]) 
-  console.log(waypoint.current); 
-  const str = ''; 
   
   const [isOpen1, setOpen1] = React.useState(false);
   const [isOpen2, setOpen2] = React.useState(false);
@@ -66,8 +64,7 @@ function App() {
   const handleClose1 = () => {
     setOpen1(false); 
     setNum(num-1);
-    deleteWaypoint(stop1.current.value); 
-    
+    deleteWaypoint(stop1.current.value);    
   };
   const handleClose2 = () => {
     setOpen2(false);
@@ -149,7 +146,6 @@ function App() {
     return <SkeletonText />
   }
 
-
   async function calculateRoute() {
   /*  if (originRef.current.value === '' || 
         destiantionRef.current.value === ''|| 
@@ -208,19 +204,39 @@ function App() {
       travelMode: google.maps.TravelMode.DRIVING,
     })
 
+      Distance(results); 
 
-    if(results.routes[0].legs[0].distance.text.length > 6)
-    {
-      let num1 = results.routes[0].legs[0].distance.text.slice(0,1)
-      let num2 = results.routes[0].legs[0].distance.text.slice(2, results.routes[0].legs[0].distance.text.length-2)
-      console.log("Hey ",num1+num2)
-      setDistance(num1+num2)
-    }
-    else{
-      setDistance(results.routes[0].legs[0].distance.text.slice(0, results.routes[0].legs[0].distance.text.length-2)) 
-    }
-    setDirectionsResponse(results)   
+      setDirectionsResponse(results); 
   }
+
+
+  function Distance(results){
+
+      let updatedistance = []
+
+      for(var i=0; i<results.routes[0].legs.length; i++)
+      {
+        if(results.routes[0].legs[0].distance.text.length > 6)
+        {
+          let num1 = results.routes[0].legs[i].distance.text.slice(0,1); 
+          let num2 = results.routes[0].legs[i].distance.text.slice(2, results.routes[0].legs[i].distance.text.length-2);
+          updatedistance.push(num1+num2)
+        }
+        else{
+          updatedistance.push(results.routes[0].legs[i].distance.text.slice(0, results.routes[0].legs[i].distance.text.length-2))
+        }
+      }
+      
+      let total = 0; 
+      for(var i=0; i<updatedistance.length; i++)
+      {
+        total = total + parseInt(updatedistance[i]); 
+      }
+
+      setDistance(total); 
+
+  }
+
 
   function setWaypoint(el){
     if(val!==num)
@@ -246,230 +262,245 @@ function App() {
 
 
   return (
-    <Flex
-      position='relative'
-      flexDirection='column'
-      h='5vh'
-      w='100vw'
-      alignItems='flex-start' 
-    >
-      <Box position='absolute' left={0} top={0} h='100%' w='100%'>
-        {/* Google Map Box */}
-        <GoogleMap
-          center={center}
-          zoom={15}
-          mapContainerStyle={{ width: '100%', height: '100%' }}
-          options={{
-            zoomControl: false,
-            streetViewControl: false,
-            mapTypeControl: false,
-            fullscreenControl: false,
-          }}
-          onLoad={map => setMap(map)}
-        >
-          {directionsResponse && (
-            <DirectionsRenderer directions={directionsResponse} />
-          )}
-        </GoogleMap>
-      </Box>
-      <Box 
-          width='350px' 
-          p={2}
-          borderRadius='lg'
-          m={2}
-          bgColor='white'
-          shadow='base'
-          zIndex='1'
-          pl='16px'
-          ml='16px'>
-          <Box color={'black'}
-          fontSize='20px'
-          fontWeight='700'
-          textAlign='center'
-          pb='5px'
+
+    <SimpleGrid columns={{ base: 1, md: 1, xl: 1 }}>
+      <Box>
+        <Flex
+          position='relative'
+          flexDirection='column'
+          h='50vh'
+          w='100vw'
+          alignItems='flex-start' 
           >
-            Calculate your trip 
+          <Box position='absolute' left={0} top={0} h='100%' w='100%'>
+            {/* Google Map Box */}
+            <GoogleMap
+              center={center}
+              zoom={15}
+              mapContainerStyle={{ width: '100%', height: '100%' }}
+              options={{
+                zoomControl: false,
+                streetViewControl: false,
+                mapTypeControl: false,
+                fullscreenControl: false,
+                }}
+                onLoad={map => setMap(map)}
+            >
+              {directionsResponse && (
+                <DirectionsRenderer directions={directionsResponse} />
+              )}
+            </GoogleMap>
           </Box>
-          <HStack pl='20px' pt='10px'>
-            <Autocomplete>
-              <Input width='264px' type='text' placeholder='Origin' ref={originRef}/>
-            </Autocomplete>
-          </HStack>  
-          {isOpen1 && 
+          <Box 
+            width='350px' 
+            p={2}
+            borderRadius='lg'
+            m={2}
+            bgColor='white'
+            shadow='base'
+            zIndex='1'
+            pl='16px'
+            ml='16px'>
+            <Box color={'black'}
+              fontSize='20px'
+              fontWeight='700'
+              textAlign='center'
+              pb='5px'
+            >
+              Calculate your trip 
+            </Box>
+            <HStack pl='20px' pt='10px'>
+              <Autocomplete>
+                <Input width='264px' type='text' placeholder='Origin' ref={originRef}/>
+              </Autocomplete>
+            </HStack>  
+            {isOpen1 && 
+              <HStack pl='20px' pt='10px'>
+                <Autocomplete>
+                  <Input
+                    width='264px'
+                    type='text'
+                    placeholder='Add a stop'
+                    ref={stop1}
+                  />
+                </Autocomplete>
+                <Button 
+                p={0} 
+                colorScheme='white'
+                onClick={handleClose1}>
+                <Image src={erase} mr='10px' width='25px' height='auto'/>
+                </Button>
+              </HStack>
+            }
+            {isOpen2 && 
+              <HStack pl='20px' pt='10px'>
+                <Autocomplete>
+                  <Input
+                    width='264px'
+                    type='text'
+                    placeholder='Add a stop'
+                    ref={stop2}
+                  />
+                </Autocomplete>
+                <Button 
+                p={0} 
+                colorScheme='white'
+                onClick={handleClose2}>
+                <Image src={erase} mr='10px' width='25px' height='auto'/>
+                </Button>
+              </HStack>
+            }
+            {isOpen3 && 
+              <HStack pl='20px' pt='10px'>
+                <Autocomplete>
+                  <Input
+                    width='264px'
+                    type='text'
+                    placeholder='Add a stop'
+                    ref={stop3}
+                  />
+                </Autocomplete>
+                <Button 
+                p={0} 
+                colorScheme='white'
+                onClick={handleClose3}>
+                <Image src={erase} mr='10px' width='25px' height='auto'/>
+                </Button>
+              </HStack>
+            }
+            {isOpen4 && 
+              <HStack pl='20px' pt='10px'>
+                <Autocomplete>
+                  <Input
+                    width='264px'
+                    type='text'
+                    placeholder='Add a stop'
+                    ref={stop4}
+                  />
+                </Autocomplete>
+                <Button 
+                p={0} 
+                colorScheme='white'
+                onClick={handleClose4}>
+                <Image src={erase} mr='10px' width='25px' height='auto'/>
+                </Button>
+              </HStack>
+            }
+            {isOpen5 && 
+              <HStack pl='20px' pt='10px'>
+                <Autocomplete>
+                  <Input
+                    width='264px'
+                    type='text'
+                    placeholder='Add a stop'
+                    ref={stop5}
+                  />
+                </Autocomplete>
+                <Button 
+                p={0} 
+                colorScheme='white'
+                onClick={handleClose5}>
+                <Image src={erase} mr='10px' width='25px' height='auto'/>
+                </Button>
+              </HStack>
+            }
+            {isOpen6 && 
+              <HStack pl='20px' pt='10px'>
+                <Autocomplete>
+                  <Input
+                    width='264px'
+                    type='text'
+                    placeholder='Add a stop'
+                    ref={stop6}
+                  />
+                </Autocomplete>
+                <Button 
+                p={0} 
+                colorScheme='white'
+                onClick={handleClose6}>
+                <Image src={erase} mr='10px' width='25px' height='auto'/>
+                </Button>
+              </HStack>
+            }
+            {isOpen7 && 
+              <HStack pl='20px' pt='10px'>
+                <Autocomplete>
+                  <Input
+                    width='264px'
+                    type='text'
+                    placeholder='Add a stop'
+                    ref={stop7}
+                  />
+                </Autocomplete>
+                <Button 
+                p={0} 
+                colorScheme='white'
+                onClick={handleClose7}>
+                <Image src={erase} mr='10px' width='25px' height='auto'/>
+                </Button>
+              </HStack>
+            }
+            {isOpen8 && 
+              <HStack pl='20px' pt='10px'>
+                <Autocomplete>
+                  <Input
+                    width='264px'
+                    type='text'
+                    placeholder='Add a stop'
+                    ref={stop8}
+                  />
+                </Autocomplete>
+                <Button 
+                p={0} 
+                colorScheme='white'
+                onClick={handleClose8}>
+                <Image src={erase} mr='10px' width='25px' height='auto'/>
+                </Button>
+              </HStack>
+            }
             <HStack pl='20px' pt='10px'>
               <Autocomplete>
                 <Input
                   width='264px'
                   type='text'
-                  placeholder='Add a stop'
-                  ref={stop1}
+                  placeholder='Destination'
+                  ref={destiantionRef}
                 />
               </Autocomplete>
-              <Button 
-              p={0} 
-              colorScheme='white'
-              onClick={handleClose1}>
-              <Image src={erase} mr='10px' width='25px' height='auto'/>
-              </Button>
             </HStack>
-          }
-           {isOpen2 && 
-            <HStack pl='20px' pt='10px'>
-              <Autocomplete>
-                <Input
-                  width='264px'
-                  type='text'
-                  placeholder='Add a stop'
-                  ref={stop2}
-                />
-              </Autocomplete>
-              <Button 
-              p={0} 
-              colorScheme='white'
-              onClick={handleClose2}>
-              <Image src={erase} mr='10px' width='25px' height='auto'/>
+            <Box mt='10px' textAlign='center'>
+              <Button colorScheme='green' type='submit' onClick={calculateRoute}>
+                  Calculate Route
               </Button>
-            </HStack>
-          }
-          {isOpen3 && 
-            <HStack pl='20px' pt='10px'>
-              <Autocomplete>
-                <Input
-                  width='264px'
-                  type='text'
-                  placeholder='Add a stop'
-                  ref={stop3}
-                />
-              </Autocomplete>
-              <Button 
+            </Box>
+            <Button
+              ml='20px'
+              hidden='' 
+              id='addValue'
               p={0} 
-              colorScheme='white'
-              onClick={handleClose3}>
-              <Image src={erase} mr='10px' width='25px' height='auto'/>
-              </Button>
-            </HStack>
-          }
-          {isOpen4 && 
-            <HStack pl='20px' pt='10px'>
-              <Autocomplete>
-                <Input
-                  width='264px'
-                  type='text'
-                  placeholder='Add a stop'
-                  ref={stop4}
-                />
-              </Autocomplete>
-              <Button 
-              p={0} 
-              colorScheme='white'
-              onClick={handleClose4}>
-              <Image src={erase} mr='10px' width='25px' height='auto'/>
-              </Button>
-            </HStack>
-          }
-          {isOpen5 && 
-            <HStack pl='20px' pt='10px'>
-              <Autocomplete>
-                <Input
-                  width='264px'
-                  type='text'
-                  placeholder='Add a stop'
-                  ref={stop5}
-                />
-              </Autocomplete>
-              <Button 
-              p={0} 
-              colorScheme='white'
-              onClick={handleClose5}>
-              <Image src={erase} mr='10px' width='25px' height='auto'/>
-              </Button>
-            </HStack>
-          }
-          {isOpen6 && 
-            <HStack pl='20px' pt='10px'>
-              <Autocomplete>
-                <Input
-                  width='264px'
-                  type='text'
-                  placeholder='Add a stop'
-                  ref={stop6}
-                />
-              </Autocomplete>
-              <Button 
-              p={0} 
-              colorScheme='white'
-              onClick={handleClose6}>
-              <Image src={erase} mr='10px' width='25px' height='auto'/>
-              </Button>
-            </HStack>
-          }
-          {isOpen7 && 
-            <HStack pl='20px' pt='10px'>
-              <Autocomplete>
-                <Input
-                  width='264px'
-                  type='text'
-                  placeholder='Add a stop'
-                  ref={stop7}
-                />
-              </Autocomplete>
-              <Button 
-              p={0} 
-              colorScheme='white'
-              onClick={handleClose7}>
-              <Image src={erase} mr='10px' width='25px' height='auto'/>
-              </Button>
-            </HStack>
-          }
-          {isOpen8 && 
-            <HStack pl='20px' pt='10px'>
-              <Autocomplete>
-                <Input
-                  width='264px'
-                  type='text'
-                  placeholder='Add a stop'
-                  ref={stop8}
-                />
-              </Autocomplete>
-              <Button 
-              p={0} 
-              colorScheme='white'
-              onClick={handleClose8}>
-              <Image src={erase} mr='10px' width='25px' height='auto'/>
-              </Button>
-            </HStack>
-          }
-          <HStack pl='20px' pt='10px'>
-            <Autocomplete>
-              <Input
-                width='264px'
-                type='text'
-                placeholder='Destination'
-                ref={destiantionRef}
-              />
-            </Autocomplete>
-          </HStack>
-          <Button colorScheme='pink' type='submit' onClick={calculateRoute}>
-              Calculate Route
-            </Button>
-          <Text>Distance: {distance} </Text>
-          <Button
-            hidden='' 
-            id='addValue'
-            p={0} 
-            pt='10px'
-            colorScheme='white' 
-            type='submit' 
-            color='424A5C'
-            onClick={handleOpen}>
+              pt='10px'
+              colorScheme='white' 
+              type='submit' 
+              color='424A5C'
+              onClick={handleOpen}>
               <Image src={cross} mr='10px' width='auto' height='auto'/>
-              Add a stop
+                Add a stop
             </Button>
+            <Text mt='10px'>Distance: {distance} </Text>
+            <Box mt='10px'>
+              <Itinerary distance={distance} />
+            </Box>
+          </Box>
+          <Box>
+            <Button onClick={() => setDistance(distance + 1)}>
+            </Button>
+          </Box>
+        </Flex>
       </Box>
       <Box>
-          <Itinerary distance={distance} />
+        <View/>
       </Box>
-    </Flex>
+    </SimpleGrid> 
   )
 }
 

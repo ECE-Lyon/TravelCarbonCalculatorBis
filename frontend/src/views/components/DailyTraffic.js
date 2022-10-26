@@ -1,7 +1,7 @@
 import React from "react";
 
 // Chakra imports
-import { Box } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 import BarChart from "components/charts/BarChart";
 
 // Custom components
@@ -16,7 +16,7 @@ export default function DailyTraffic(props) {
   const { ...rest } = props;
 
   return (
-    <Card align='center' direction='column' w='100%' {...rest}>
+    <Card height='330px' align='center' direction='column' w='100%' {...rest}>
       <Box h='240px' mt='auto'>
         <BarChart
           chartData={barChartDataDailyTraffic}

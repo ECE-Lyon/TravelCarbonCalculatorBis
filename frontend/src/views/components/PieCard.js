@@ -18,7 +18,7 @@ export default function Conversion(props) {
     "unset"
   );
   return (
-    <Card p='20px' align='center' direction='column' w='100%' {...rest}>
+    <Card height='330px' p='20px' align='center' direction='column' w='100%' {...rest}>
       <Flex
         px={{ base: "0px", "2xl": "10px" }}
         justifyContent='space-between'
@@ -46,7 +46,8 @@ export default function Conversion(props) {
         chartData={pieChartData}
         chartOptions={pieChartOptions}
       />
-      <Card
+      <Card 
+        height='80px'
         bg={cardColor}
         flexDirection='row'
         boxShadow={cardShadow}
